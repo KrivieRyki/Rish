@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: max
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - 5435:5432
+
+
+  web:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    command: bash -c "python -Wd manage.py migrate && python -Wd manage.py runserver 0.0.0.0:8000"
+
